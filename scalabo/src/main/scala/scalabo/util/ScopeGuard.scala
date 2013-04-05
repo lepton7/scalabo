@@ -7,10 +7,11 @@ object ExitType extends Enumeration {
 class Procedure(exit: ExitType.Value, proc: =>Any) {
   def call(throwed: Option[Throwable]): Option[Throwable] = {
     try {
-      ((exit, throwed): @unchecked) match {
+      (exit, throwed) match {
         case (ExitType.EXIT,    _)       => proc
         case (ExitType.SUCCESS, None)    => proc
         case (ExitType.FAILURE, Some(e)) => proc
+        case _ =>
       }
       throwed
     } catch {
@@ -70,7 +71,7 @@ class Procedure(exit: ExitType.Value, proc: =>Any) {
  * }}}
  */
 object ScopeGuard {
-  def apply(block: ScopeGuard => Any) = {
+  def apply(block: ScopeGuard => Any): Unit = {
     val scope = new ScopeGuard
     var throwed: Option[Throwable] = None
     try {
@@ -81,8 +82,9 @@ object ScopeGuard {
       throwed = scope.procs.reverseIterator.foldLeft(throwed)((t, p) => p.call(t))
     }
 
-    (throwed: @unchecked) match {
+    throwed match {
       case Some(e) => throw e
+      case _ =>
     }
   }
 }
