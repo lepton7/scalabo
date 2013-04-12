@@ -21,31 +21,13 @@ package object util extends CloserImplicit {
    * import scalabo.util._
    * for(r1 <- using(new Resource);
    *     r2 <- using(new Resource2);
-   *     // 自動開放しないリソースはunusingを使う
-   *     r3 <- unusing(new NonCloseResource)) {
+   *     // 自動解放をしたくないリソースは = で定義すれば良い
+   *     r3 = new NonCloseResource) {
    *   // リソース使って色々と
-   *   ..
+   *   ...
    *   // r1, r2は自動的に解放される。
    * }
    * }}}
    */
   def using[R: Closer](resource: R) = Managed.using(resource)
-  /**
-   * for式で自動解放を行わないリソースのためのメソッド
-   * 詳しくは[[scalabo.util.Managed]]を参照
-   *
-   * 使い方2:
-   * {{{
-   * import scalabo.util._
-   * for(r1 <- using(new Resource);
-   *     r2 <- using(new Resource2);
-   *     // 自動開放しないリソースはunusingを使う
-   *     r3 <- unusing(new NonCloseResource)) {
-   *   // リソース使って色々と
-   *   ..
-   *   // r1, r2は自動的に解放される。
-   * }
-   * }}}
-   */
-  def unusing[R](resource: R) = Managed.unusing(resource)
 }

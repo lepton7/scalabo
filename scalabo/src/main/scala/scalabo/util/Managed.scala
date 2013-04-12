@@ -41,8 +41,8 @@ trait CloserImplicit {
  *
  * for(r1 <- using(new Resource1);
  *     r2 <- using(new Resource2);
- *     // 自動的に開放したくないリソースは unusingを使う
- *     r3 <- unusing(new NonCloseResource) {
+ *     // 自動的に開放したくないリソースは =で定義すれば良い
+ *     r3 = new NonCloseResource) {
  *    // リソース使ってなんやかんや
  *  }
  * }}}
@@ -52,14 +52,6 @@ trait CloserImplicit {
  */
 object Managed extends CloserImplicit {
   def using[R: Closer](resource: R) = new Managed[R](resource, implicitly[Closer[R]])
-  def unusing[R](resource: R) =
-    new {
-      def foreach[B](action: R => B): Unit = {
-        action(resource)
-      }
-      def flatMap[B](action: R => B): B = action(resource)
-      def map[B](action: R => B): B = action(resource)
-    }
 }
 
 /**
