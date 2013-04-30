@@ -1,8 +1,9 @@
-package scalabo.util
+package scalabo.util.control
 
 import org.scalatest.FreeSpec
 import scala.collection.mutable.ArrayBuffer
 import org.scalatest.matchers.MustMatchers
+import scalabo.util.control.ScopeGuard
 
 class ScopeGuardSpec extends FreeSpec with MustMatchers {
   "ScopeGuardブロックで" - {

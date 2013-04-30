@@ -1,4 +1,6 @@
-package scalabo.util
+package scalabo.util.control
+
+import scala.collection.mutable.ArrayBuffer
 
 object ExitType extends Enumeration {
   val EXIT, SUCCESS, FAILURE = Value
